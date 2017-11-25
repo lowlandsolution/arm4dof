@@ -1,0 +1,18 @@
+<launch>
+
+  <arg name="model" />
+  <arg name="object_frame" />
+  <arg name="gui" default="true" />
+  <arg name="rvizconfig" default="$(find urdf_tutorial)/rviz/urdf.rviz" />
+
+  <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+  <param name="use_gui" value="$(arg gui)"/>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+  <node name="armctl" pkg="arm4dof" type="armctl" />
+  <node name="inversion_monitor" pkg="arm4dof" type="inversion_monitor" output="screen">
+    <param name="object_frame" value="$(arg object_frame)"/>
+  </node>
+
+</launch>
